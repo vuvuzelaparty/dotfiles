@@ -1,0 +1,23 @@
+# change control key
+# `stty -ixon` needed to be added to ~/.zshrc to make this work
+#escape ^Aa
+# caption always "%{+b rk}%H%{gk} |%c %{yk}%d.%m.%Y | %72=Load: %l %{wk}"
+hardstatus alwayslastline
+# the hardstatus
+# for load - first number is average CPU load during last minute, then 5 minutes, then 15 minutes
+hardstatus string '%{+ mk}[ %{rk}%H%{mk} ]%{+ g}[%{w}%=%?%-Lw%?%{=b gk} %n^^$ %t %?%{= kw}%+Lw%=%{g}]%{+ B}[%D, %M/%d %{+b Y}%C%a%{-b B}]'
+# hardstatus string '%{+ mk}[ %{=b kr}%H%{-b km} ]%{+ w}[%=%?%-Lw%?%{=b gR}(%{W}%n>$ %t%?%?%{gR})%{= kw}%+Lw%=%{w}]%{Y}[%l]%{+ B}[%D, %d/%M%{W}%C:%s%a%{B}]'
+altscreen on
+bindkey -k k7 prev
+bindkey -k k8 next
+bindkey next
+vbell off
+bell_msg ""
+defscrollback 1000
+startup_message off
+
+attrcolor b ".I"
+bind ! select 11
+bind @ select 12
+bind \# select 13
+bind ) select 10
