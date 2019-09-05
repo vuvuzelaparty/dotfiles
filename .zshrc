@@ -203,19 +203,23 @@ alias rmd='rmdir'
 alias mount='mount | column -t'
 alias wget='wget -c'
 mc() { mkdir "$@" && cd "$1" }
-mktar() { tar -cvf "$@"; zmv "$1" "$1.tar" }
-mktargz() { tar -cvzf "$@"; zmv "$1" "$1.tar.gz" }
+mktar() { tar -cvf "$@"; mv "$1" "$1.tar" }
+mktargz() { tar -cvzf "$@"; mv "$1" "$1.tar.gz" }
 alias utar='tar xvf'
 alias logout='pkill -u $USER'
 eval $(thefuck --alias)
 eval $(thefuck --alias FUCK)
 alias php='/usr/bin/psysh'
 alias :q='echo "Nothing happened, because you were not in vim."'
-alias :Q='echo "Nothing happened, because you were not in vim."'
+alias :Q=':q'
 alias :w='echo "Nothing happened, because you are not in vim."'
-alias :W='echo "Nothing happened, because you are not in vim."'
-alias :wq='echo "Nothing happened, because you were not in vim."'
-alias :qw='echo "Nothing happened, because you were not in vim."'
+alias :W=':w'
+alias :wq=':q'
+alias :Wq=':q'
+alias :WQ=':q'
+alias :qw=':q'
+alias :Qw=':q'
+alias :QW=':q'
 alias e='exit'
 alias j='jobs'
 alias vi="vim"
@@ -237,7 +241,12 @@ vmconsole() { setScTitle console && sudo virsh console && scrTermTitle }
 alias rm='rm -f'
 alias rmrf='rm -r'
 alias gzip='gzip -f'
-alias open='xdg-open 2> /dev/null'
+alias pdf='evince 2> /dev/null'
+alias img='eog 2> /dev/null'
+open () {
+	[[ "$(file -b $1)" =~ "PDF document.*" ]] && pdf $1
+	{ [[ "$(file -b $1)" =~ "JPEG image data.*" ]] || [[ "$(file -b $1)" =~ "PNG image data.*" ]] } && img $1
+}
 swp() { find . -depth -name .\*.swp -exec rm -i {} \; && find ~/.cache/vim/swap -name \*.swp -exec rm -i {} \; }
 alias tmp='rm /tmp/tmp.*'
 pi() { setScTitle pi && ssh pi@raspberrypi && scrTermTitle }

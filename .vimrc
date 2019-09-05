@@ -24,6 +24,7 @@ call vundle#begin()
 "
 "" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'rust-lang/rust.vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'bling/vim-airline'
 Plugin 'kshenoy/vim-signature'
