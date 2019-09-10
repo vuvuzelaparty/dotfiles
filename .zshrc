@@ -59,7 +59,7 @@ RPROMPT='${vcs_info_msg_0_}'
 prettyPathFunc () {
 	fullShortPath=$(echo $PWD | perl -pe "s/(\w{3})[^\/]+\//\1\//g")
 	if (( $(print -P %~ | grep -o '/' | wc -l) < 3 )); then
-		if (( $(echo $fullShortPath | grep -o '/' | wc -l) == 4 )) && [[ $PWD == $HOME* ]]; then
+		if (( $(echo $fullShortPath | grep -o '/' | wc -l) == 4 )) && [[ $PWD = $HOME* ]]; then
 			prettyPath=$(echo $fullShortPath | cut -c6- | sed "s/${USER:0:3}/~/")
 		else
 			prettyPath=$(print -P %~)
@@ -74,9 +74,9 @@ prettyPathFunc
 
 # name the screen/tmux tab the current directory
 scrTermTitle () {
-	if [[ $PWD == $HOME ]]; then
+	if [[ $PWD = $HOME ]]; then
 		setScTitle "~"
-	elif [[ $PWD == "/" ]]; then
+	elif [[ $PWD = "/" ]]; then
 		setScTitle "/"
 	else
 		setScTitle "$(echo $PWD | awk -F "/" '{ print $NF }')"
@@ -116,7 +116,7 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-autoload -Uz zmv # allow zmv to be used
+autoload -Uz zmv # allow zmv to be used, might not be necessary anymore
 
 PROMPT='%F{magenta}<< %F{red}%n %B%F{blue}~> %b%F{yellow}$prettyPath%F{magenta} >>%f ${VIMODE} $ ' # display prompt in a nice way
 
@@ -139,7 +139,6 @@ bindkey -M vicmd 'M' vi-caps-lock-panic
 
 # turn off screensaver
 xset s off -dpms
-
 
 # Don't have to worry about num lock anymore
 # bindkey -s "[2~" "0"
@@ -169,7 +168,7 @@ alias scl='sc -list'
 alias sr='sc -raAd'
 alias tmux='tmux -2'
 alias tw='tmux neww'
-t() { [[ "$TERM" == "screen" ]] && tw || tmux }
+t() { [[ $TERM = screen ]] && tw || tmux }
 alias tl='tmux ls'
 alias ta='tmux attach'
 alias tat='ta -t'

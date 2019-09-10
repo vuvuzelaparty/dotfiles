@@ -135,15 +135,16 @@ bindsym $mod+Shift+0 move container to workspace 10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
+bindsym $mod+Shift+s reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # lock screen
 bindsym $mod+x exec "~/.lock_screen"
 bindsym $mod+Shift+x exec "~/.sleep"
-bindsym F12 exec "~/.sleep"
+bindsym Shift+F12 exec "~/.sleep"
 
 #exec --no-startup-id xautolock -locker "~/.lock_screen"
 #exec --no-startup-id "~/.lock_screen && systemctl suspend -i"
@@ -185,6 +186,12 @@ bindsym F3 exec amixer -D pulse sset Master 2%+
 #bindsym Alt+F3 exec amixer -D pulse sset Master 0%-,2%+
 bindsym Shift+F2 exec amixer -D pulse sset Master 10%-
 bindsym Shift+F3 exec amixer -D pulse sset Master 10%+
+
+bindsym F4 exec [ -n "$(amixer get Capture | grep '\[off\]' | awk 'NR==1{print $6}')" ] && amixer set Capture cap || amixer set Capture nocap
+bindsym F5 exec amixer -D pulse sset Capture 2%-
+bindsym F6 exec amixer -D pulse sset Capture 2%+
+bindsym Shift+F5 exec amixer -D pulse sset Capture 10%-
+bindsym Shift+F6 exec amixer -D pulse sset Capture 10%+
 
 #####################
 #Eye Candy Below ####
