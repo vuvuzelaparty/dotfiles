@@ -1,7 +1,5 @@
 blu="<bluetooth_address>"
 # replace <bluetooth_address> with your device ID; can be found by doing `echo 'paired-devices' | bluetoothctl` assuming your device is already paired
-# blu="<bluetooth_address>"
-# replace <bluetooth_address> with your device ID; can be found by doing `echo 'paired-devices' | bluetoothctl` assuming your device is already paired
 alias b='echo "connect $blu" | bluetoothctl'
 alias bd='echo "disconnect $blu" | bluetoothctl'
 alias bn='echo "power on" | bluetoothctl'
