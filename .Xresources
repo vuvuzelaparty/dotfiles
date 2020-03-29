@@ -1,5 +1,7 @@
 xterm*faceName: VeraMono
+uxterm*faceName: DejaVu Sans Mono
 xterm*faceSize: 10
+uxterm*faceSize: 10
 !xterm*vt100*geometry: 80x60
 !xterm*saveLines: 16384
 !xterm*loginShell: true
@@ -9,6 +11,9 @@ xterm*faceSize: 10
 xterm*Background: black
 xterm*Foreground: white
 xterm*cursorColor: white
+uxterm*Background: black
+uxterm*Foreground: white
+uxterm*cursorColor: white
 
 !BLK Cursor
 !#define _color0        #000d18

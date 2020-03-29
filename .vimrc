@@ -20,16 +20,16 @@ endif
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 "" alternatively, pass a path where Vundle should install plugins
-""call vundle#begin('~/some/path/here')
+" call vundle#begin('~/some/path/here')
 "
 "" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'rust-lang/rust.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'bling/vim-airline'
+Plugin 'rust-lang/rust'
+Plugin 'vim-syntastic/syntastic'
+Plugin 'vim-airline/vim-airline'
 Plugin 'kshenoy/vim-signature'
 Plugin 'majutsushi/tagbar'
-Plugin 'kien/tabman'
+Plugin 'kien/tabman.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/YankRing.vim'
 call vundle#end()			" required
