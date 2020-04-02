@@ -9,8 +9,8 @@ HISTFILE=~/.zhistory
 HISTSIZE=5000
 SAVEHIST=5000
 
-setopt markdirs extendedglob autocd promptsubst listpacked braceccl globdots globstarshort magicequalsubst nullglob numericglobsort rcexpandparam histexpiredupsfirst histfindnodups histignorealldups histignoredups histreduceblanks histsavenodups pathdirs sunkeyboardhack cbases cprecedences octalzeroes
-unsetopt caseglob ignorebraces ignoreclosebraces flowcontrol
+setopt autocd braceccl cbases cprecedences extendedglob globdots globstarshort histexpiredupsfirst histfindnodups histignorealldups histignoredups histreduceblanks histsavenodups listpacked magicequalsubst markdirs numericglobsort octalzeroes pathdirs promptsubst rcexpandparam sunkeyboardhack
+unsetopt caseglob flowcontrol ignorebraces ignoreclosebraces nomatch
 
 bindkey -v # vi mode
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
@@ -36,8 +36,8 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:*' stagedstr 'Staged'
 zstyle ':vcs_info:*' unstagedstr ' Modified'
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' actionformats '%F{5}[%F{2}%b%F{3}|%F{1}%a%F{5}]%f '
-zstyle ':vcs_info:*' formats '%B%F{2}%c%F{3}%u %F{5}[%F{2}%b%F{5}] '
+zstyle ':vcs_info:*' actionformats '%F{5}[ %F{2}%b%F{3}|%F{1}%a%F{5} ]%f'
+zstyle ':vcs_info:*' formats '%B%F{2}%c%F{3}%u %F{5}[ %F{2}%b%F{5} ]'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 zstyle ':vcs_info:*' enable git
 +vi-git-untracked() {
@@ -57,12 +57,10 @@ setScTitle () { print -n "\033k$@\033\134" }
 # display current directory in a nice way
 prettyPathFunc() {
 	local fullShortPath=$(print -P %~ | perl -pe "s/(\w{3})[^\/]+\//\1\//g")
-	local prettyPath=''
+	local prettyPath=$(print -P %~)
 	if (( $(print -P %~ | grep -o '/' | wc -l) < 3 )); then
 		if (( $(echo $fullShortPath | grep -o '/' | wc -l) == 4 )) && [[ $PWD = $HOME* ]]; then
 			prettyPath=$(echo $fullShortPath | cut -c6- | sed "s/${USER:0:3}/~/")
-		else
-			prettyPath=$(print -P %~)
 		fi
 	elif (( $(echo $fullShortPath | grep -o '/' | wc -l) < 4 )) && [[ $PWD != $HOME* ]]; then
 		prettyPath=$fullShortPath
@@ -79,7 +77,7 @@ scrTermTitle() {
 	elif [[ $PWD = "/" ]]; then
 		setScTitle "/"
 	else
-		setScTitle "$(echo $PWD | awk -F "/" '{ print $NF }')"
+		setScTitle "$(echo $PWD | awk -F "/" '{print $NF}')"
 	fi
 }
 scrTermTitle
@@ -183,9 +181,9 @@ alias sm='smigrep'
 alias networkIPlist="nmap -sn $(ip route show | grep -i 'default via'| awk '{print $3}')/24"
 spu() { sudo pacman-key --refresh-keys && sudo pacman -Syu && sudo pacman -R $(pacman -Qdtq) }
 spuf() { sudo pacman-key --refresh-keys && sudo pacman -Syyu && sudo pacman -R $(pacman -Qdtq) }
-rand() { [[ "$1" =~ "^[0-9]+$" ]] && (($1 < 32769)) && echo $(( RANDOM%$1 + 1 )) || { echo "Please enter a number between 1 and 32768" && return; } }
-rand2() { [[ "$1" =~ "^[0-9]+$" ]] && [[ "$2" =~ "^[0-9]+$" ]] && (($2 < 32769)) && (($2 > $1)) && echo $(( RANDOM%(($2-$1+1)) + $1 )) || { echo "Please enter 2 numbers between 1 and 32768, with the second number being greater than the first" && return; } }
-awkk () { awk "NR==$1" ; }
+rand() { [[ "$1" =~ "^[0-9]+$" ]] && (($1 < 32769)) && echo $(( RANDOM%$1 + 1 )) || { echo "Please enter a number between 1 and 32768" && return } }
+rand2() { [[ "$1" =~ "^[0-9]+$" ]] && [[ "$2" =~ "^[0-9]+$" ]] && (($2 < 32769)) && (($2 > $1)) && echo $(( RANDOM%(($2-$1+1)) + $1 )) || { echo "Please enter 2 numbers between 1 and 32768, with the second number being greater than the first" && return } }
+awkk () { awk "NR==$1" }
 alias devices="mount | grep 'sd[a-z][0-9]'"
 alias wh='noglob find . -depth -iname'
 alias pp='curl icanhazip.com'
@@ -197,11 +195,12 @@ open () {
 	[[ "$(file -b $1)" =~ "PDF document.*" ]] && pdf $1 &
 	{ [[ "$(file -b $1)" =~ "JPEG image data.*" ]] || [[ "$(file -b $1)" =~ "PNG image data.*" ]] } && img $1 &
 }
-ficdFunc() {
-	~/ficd $1
-	[ -f ficdLocation ] && { [ "$(cat ficdLocation | wc -l)" -eq "1" ] || echo ; } && cat ficdLocation && cd $(tail -1 ficdLocation) && cd - 1> /dev/null && rm ficdLocation && cd - 1> /dev/null
-}
-alias ficd='ficdFunc'
+# this is broken atm TODO fix this
+# ficdFunc() {
+# 	~/ficd $1
+# 	[ -f ficdLocation ] && { [ "$(cat ficdLocation | wc -l)" -eq "1" ] || echo } && cat ficdLocation && cd $(tail -1 ficdLocation) && cd - 1> /dev/null && rm ficdLocation && cd - 1> /dev/null
+# }
+# alias ficd='ficdFunc'
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/robcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
 
 rmctrlM() {

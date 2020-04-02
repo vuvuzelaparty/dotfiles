@@ -199,8 +199,6 @@ augroup resCur
 	autocmd BufWinEnter * call ResCur()
 augroup END
 
-set pastetoggle=<F9>
-
 " 11/08/2011 - Move from tabstop=2,expantab to tabstop=4,noexpandtab
 set tabstop=4
 set noexpandtab
