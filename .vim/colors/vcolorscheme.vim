@@ -1,8 +1,4 @@
 " Vim color file
-" Maintainer:   Rob
-" Last Change:  2018 Sep 26
-
-" robcolorscheme -- colors that I, Rob, like
 
 hi clear
 if exists("syntax_on")
@@ -10,7 +6,7 @@ if exists("syntax_on")
 endif
 
 set cursorline
-let colors_name = "robcolorscheme"
+let colors_name = "vcolorscheme"
 
 hi CursorLine	cterm=bold
 hi CursorLineNR	ctermfg=red ctermbg=233 cterm=bold

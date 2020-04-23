@@ -4,7 +4,6 @@
 filetype off
 set fileformats=unix,dos
 
-" set runtimepath+=/usr/local/share/lilypond/current/vim/
 " Setting up Vundle - the vim plugin bundler
 let iCanHazVundle=1
 let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
@@ -124,9 +123,6 @@ set ic
 
 set smartcase
 
-" Higlhight search
-" nnoremap <S-CR> :noh<CR><CR>
-
 "set foldmethod=manual
 nnoremap <Space> zA
 
@@ -141,7 +137,7 @@ let g:ctrlp_by_filename = 1
 let g:ctrlp_cmd = 'CtrlP'
 
 " Change colorscheme from default
-colorscheme robcolorscheme
+colorscheme vcolorscheme
 
 set t_Co=256
 
@@ -153,13 +149,19 @@ set background=dark
 
 set mouse=a
 
-"Tell vim to remember certain things when we exit
-"  '10  :  marks will be remembered for up to 10 previously edited files
-"  "100 :  will save up to 100 lines for each register
-"  :20  :  up to 20 lines of command-line history will be remembered
-"  %    :  saves and restores the buffer list
-"  n... :  where to save the viminfo files
-set viminfo='10,\"100,:20,%,n~/.viminfo
+set tabstop=4
+
+set noexpandtab
+
+set shiftwidth=0
+
+set softtabstop=0
+
+set smarttab
+
+set showcmd
+
+set shortmess=as
 
 vnoremap // y/<C-R>"<CR>
 
@@ -182,10 +184,16 @@ set dictionary="/usr/dict/words"
 set list
 set listchars=tab:>-
 
-" I admittedly don't know what these do. Gotta do research on these
-syn match cLogic "&&\|||\|==\|!="
-syn match cSimpleAssignment " = "
-syn match cAddressOf " &"
+" /* when reopening a file in vim, return cursor to previous position instead
+" of top of file
+
+"Tell vim to remember certain things when we exit
+"  '10  :  marks will be remembered for up to 10 previously edited files
+"  "100 :  will save up to 100 lines for each register
+"  :20  :  up to 20 lines of command-line history will be remembered
+"  %    :  saves and restores the buffer list
+"  n... :  where to save the viminfo files
+set viminfo='10,\"100,:20,%,n~/.viminfo
 
 function! ResCur()
 	if line("'\"") <= line("$")
@@ -199,13 +207,7 @@ augroup resCur
 	autocmd BufWinEnter * call ResCur()
 augroup END
 
-" 11/08/2011 - Move from tabstop=2,expantab to tabstop=4,noexpandtab
-set tabstop=4
-set noexpandtab
-set shiftwidth=0
-set softtabstop=0
-set smarttab
-set showcmd
+" */
 
 " For some reason home and end keys are not mapping properly.
 " Home key
@@ -230,15 +232,13 @@ set title
 set t_ts=k
 set t_fs=\
 " set title after exiting
-if expand("%:p:h") == "/home/rob"
+if expand("%:p:h") == expand("$HOME")
 	let &titleold = "~"
 elseif expand("%:p:h") == "/"
 	let &titleold = "/"
 else
 	let &titleold = expand("%:p:h:t")
 endif
-
-set shortmess=as
 
 let g:ctrlp_map = '<c-p>'
 let g:strlp_by_filename = 1

@@ -18,7 +18,7 @@ bindkey '^[[Z' reverse-menu-complete
 bindkey '^r' history-incremental-search-backward
 export EDITOR=vim
 # The following lines were added by compinstall
-zstyle :compinstall filename "/home/rob/.zshrc"
+zstyle :compinstall filename "/home/$USER/.zshrc"
 
 autoload -Uz compinit
 compinit
@@ -52,8 +52,6 @@ precmd () { # same as $PROMPT_COMMAND in bash
 }
 RPROMPT='${vcs_info_msg_0_}'
 
-setScTitle () { print -n "\033k$@\033\134" }
-
 # display current directory in a nice way
 prettyPathFunc() {
 	local fullShortPath=$(print -P %~ | perl -pe "s/(\w{3})[^\/]+\//\1\//g")
@@ -71,6 +69,7 @@ prettyPathFunc() {
 }
 
 # name the screen/tmux tab the current directory
+setScTitle () { print -n "\033k$@\033\134" }
 scrTermTitle() {
 	if [[ $PWD = $HOME ]] || [[ $PWD = $HOME/ ]]; then
 		setScTitle "~"
@@ -132,7 +131,7 @@ alias la='l -A'
 alias ll='la -lh'
 alias dirs='dirs -v'
 alias mkdir='mkdir -p'
-alias grep='grep -I --exclude={\*.min.js,\*.css} --exclude-dir=.cache --color=always "$@" 2>/dev/null'
+alias grep='grep -I --exclude={*.min.js,*.css} --exclude-dir=.cache --color=always "$@" 2>/dev/null'
 alias sizeof='du -sh'
 alias c='cd'
 alias ...='cd ../../'
@@ -192,8 +191,10 @@ alias gzip='gzip -f'
 alias pdf='evince 2> /dev/null'
 alias img='eog 2> /dev/null'
 open () {
-	[[ "$(file -b $1)" =~ "PDF document.*" ]] && pdf $1 &
-	{ [[ "$(file -b $1)" =~ "JPEG image data.*" ]] || [[ "$(file -b $1)" =~ "PNG image data.*" ]] } && img $1 &
+	for i in $@; do
+		[[ "$(file -b $i)" =~ "PDF document.*" ]] && pdf $i &
+		{ [[ "$(file -b $i)" =~ "JPEG image data.*" ]] || [[ "$(file -b $i)" =~ "PNG image data.*" ]] } && img $i &
+	done
 }
 # this is broken atm TODO fix this
 # ficdFunc() {
@@ -201,7 +202,7 @@ open () {
 # 	[ -f ficdLocation ] && { [ "$(cat ficdLocation | wc -l)" -eq "1" ] || echo } && cat ficdLocation && cd $(tail -1 ficdLocation) && cd - 1> /dev/null && rm ficdLocation && cd - 1> /dev/null
 # }
 # alias ficd='ficdFunc'
-dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/robcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
+dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
 
 rmctrlM() {
 	for i do
@@ -212,5 +213,5 @@ rmctrlM() {
 
 # alias dd='dd "$@" status=progress oflag=sync'
 
-# to convert to decimal/binary/hex
+# to convert to decimal/binary/hex/octal
 # python -c 'print(bin|hex|oct|int(0b|0x|0o|<num>))'
