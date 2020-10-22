@@ -1,6 +1,9 @@
 # Allow zsh aliases and functions to be used from vim shell (:!<command>)
 cp ~/.zshrc ~/.zshenv
 
+# clear all aliases
+unalias -m "*"
+
 # reset home directory
 HOME=/home/$USER
 
@@ -19,6 +22,8 @@ bindkey '^r' history-incremental-search-backward
 export EDITOR=vim
 # The following lines were added by compinstall
 zstyle :compinstall filename "/home/$USER/.zshrc"
+
+autoload run-help
 
 autoload -Uz compinit
 compinit
@@ -99,7 +104,7 @@ zle -N zle-keymap-select
 
 PROMPT='%F{magenta}<< %F{red}%n %B%F{blue}~> %b%F{yellow}$(eval prettyPathFunc)%F{magenta} >>%f ${VIMODE} $ ' # display prompt in a nice way
 
-xrdb -merge ~/.Xresources
+# xrdb -merge ~/.Xresources
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 typeset -A ZSH_HIGHLIGHT_STYLES
@@ -190,18 +195,22 @@ alias top='top -o %CPU'
 alias gzip='gzip -f'
 alias pdf='evince 2> /dev/null'
 alias img='eog 2> /dev/null'
+alias mm='free -ht'
 open () {
 	for i in $@; do
 		[[ "$(file -b $i)" =~ "PDF document.*" ]] && pdf $i &
 		{ [[ "$(file -b $i)" =~ "JPEG image data.*" ]] || [[ "$(file -b $i)" =~ "PNG image data.*" ]] } && img $i &
 	done
 }
-# this is broken atm TODO fix this
-# ficdFunc() {
-# 	~/ficd $1
-# 	[ -f ficdLocation ] && { [ "$(cat ficdLocation | wc -l)" -eq "1" ] || echo } && cat ficdLocation && cd $(tail -1 ficdLocation) && cd - 1> /dev/null && rm ficdLocation && cd - 1> /dev/null
-# }
-# alias ficd='ficdFunc'
+
+# clear memory
+# sync
+# echo 1 > /proc/sys/vm/drop_caches
+# sync
+# echo 2 > /proc/sys/vm/drop_caches
+# sync
+# echo 3 > /proc/sys/vm/drop_caches
+
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
 
 rmctrlM() {
@@ -209,6 +218,10 @@ rmctrlM() {
 		sed -e "s///" $i > tmp # to get the '^M', do ctrl-v, then hit enter
 		mv tmp $i
 	done
+}
+
+goto () {
+	cd $(dirname $(wh $1))
 }
 
 # alias dd='dd "$@" status=progress oflag=sync'

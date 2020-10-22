@@ -4,3 +4,4 @@ alias b='echo "connect $blu" | bluetoothctl'
 alias bd='echo "disconnect $blu" | bluetoothctl'
 alias bn='echo "power on" | bluetoothctl'
 alias bf='echo "power off" | bluetoothctl'
+
