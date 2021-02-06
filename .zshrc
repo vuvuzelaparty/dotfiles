@@ -4,6 +4,8 @@ cp ~/.zshrc ~/.zshenv
 # clear all aliases
 unalias -m "*"
 
+alias ls='ls -CF --color=always' # color and extension coded output of ls
+
 # reset home directory
 HOME=/home/$USER
 
@@ -51,7 +53,7 @@ zstyle ':vcs_info:*' enable git
 	fi
 }
 
-precmd () { # same as $PROMPT_COMMAND in bash
+precmd() { # same as $PROMPT_COMMAND in bash
 	vcs_info
 # 	# print -Pn "\e]0;%n@%m: %~\a"
 }
@@ -74,23 +76,22 @@ prettyPathFunc() {
 }
 
 # name the screen/tmux tab the current directory
-setScTitle () { print -n "\033k$@\033\134" }
-scrTermTitle() {
+setTabTitle() { print -n "\033k$@\033\134" }
+title() {
 	if [[ $PWD = $HOME ]] || [[ $PWD = $HOME/ ]]; then
-		setScTitle "~"
+		setTabTitle "~"
 	elif [[ $PWD = "/" ]]; then
-		setScTitle "/"
+		setTabTitle "/"
 	else
-		setScTitle "$(echo $PWD | awk -F "/" '{print $NF}')"
+		setTabTitle "$(echo $PWD | awk -F "/" '{print $NF}')"
 	fi
 }
-scrTermTitle
-alias title='scrTermTitle'
+title
 
 chpwd() # function that executes any time cd is executed
 {
 	ls
-	scrTermTitle
+	title
 }
 
 VIMODE="-I-"
@@ -130,7 +131,6 @@ source ~/.blu
 
 eval $(dircolors -b ~/.dircolors)
 
-alias ls='ls -CF --color=always' # color and extension coded output of ls
 alias l='ls'
 alias la='l -A'
 alias ll='la -lh'
@@ -172,7 +172,7 @@ eval $(thefuck --alias)
 eval $(thefuck --alias FUCK)
 swp() { find . -depth -name .\*.swp -exec rm -i {} \; && find ~/.cache/vim/swap -name \*.swp -exec rm -i {} \; }
 alias tmp='rm /tmp/tmp.*'
-pi() { setScTitle pi && ssh pi@raspberrypi && scrTermTitle }
+pi() { setTabTitle pi && ssh pi@raspberrypi && title }
 alias stats='neofetch'
 makej() { make -j || make V=s | tee make_fail }
 alias AURmake='makepkg -Acsf' # $ AURmake
@@ -187,7 +187,7 @@ spu() { sudo pacman-key --refresh-keys && sudo pacman -Syu && sudo pacman -R $(p
 spuf() { sudo pacman-key --refresh-keys && sudo pacman -Syyu && sudo pacman -R $(pacman -Qdtq) }
 rand() { [[ "$1" =~ "^[0-9]+$" ]] && (($1 < 32769)) && echo $(( RANDOM%$1 + 1 )) || { echo "Please enter a number between 1 and 32768" && return } }
 rand2() { [[ "$1" =~ "^[0-9]+$" ]] && [[ "$2" =~ "^[0-9]+$" ]] && (($2 < 32769)) && (($2 > $1)) && echo $(( RANDOM%(($2-$1+1)) + $1 )) || { echo "Please enter 2 numbers between 1 and 32768, with the second number being greater than the first" && return } }
-awkk () { awk "NR==$1" }
+awkk() { awk "NR==$1" }
 alias devices="mount | grep 'sd[a-z][0-9]'"
 alias wh='noglob find . -depth -iname'
 alias pp='curl icanhazip.com'
@@ -196,11 +196,28 @@ alias gzip='gzip -f'
 alias pdf='evince 2> /dev/null'
 alias img='eog 2> /dev/null'
 alias mm='free -ht'
-open () {
+open() {
 	for i in $@; do
 		[[ "$(file -b $i)" =~ "PDF document.*" ]] && pdf $i &
 		{ [[ "$(file -b $i)" =~ "JPEG image data.*" ]] || [[ "$(file -b $i)" =~ "PNG image data.*" ]] } && img $i &
 	done
+}
+floor() {
+	local i=$1
+	i=${i%.*}
+	echo $i
+}
+ceil() {
+	local i=$1
+	[ ${i#*.} != $i ] && [ ${i#*.} -gt 0 ] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc) ; }
+	i=${i%.*}
+	echo $i
+}
+intRound() {
+	local i=$1
+	[ ${i#*.} != $i ] && [[ ${i#*.} =~ ^[5-9][0-9]*$ ]] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc) ; }
+	i=${i%.*}
+	echo $i
 }
 
 # clear memory
@@ -220,7 +237,7 @@ rmctrlM() {
 	done
 }
 
-goto () {
+goto() {
 	cd $(dirname $(wh $1))
 }
 
