@@ -48,7 +48,7 @@ zstyle ':vcs_info:*' formats '%B%F{2}%c%F{3}%u %F{5}[ %F{2}%b%F{5} ]'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 zstyle ':vcs_info:*' enable git
 +vi-git-untracked() {
-	if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && [[ $(git ls-files --other --directory --exclude-standard | sed q | wc -l | tr -d ' ') == 1 ]] ; then
+	if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && [[ $(git ls-files --other --directory --exclude-standard | sed q | wc -l | tr -d ' ') == 1 ]]; then
 		hook_com[unstaged]+=' %F{1}New%f'
 	fi
 }
@@ -209,13 +209,13 @@ floor() {
 }
 ceil() {
 	local i=$1
-	[ ${i#*.} != $i ] && [ ${i#*.} -gt 0 ] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc) ; }
+	[ ${i#*.} != $i ] && [ ${i#*.} -gt 0 ] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc); }
 	i=${i%.*}
 	echo $i
 }
 intRound() {
 	local i=$1
-	[ ${i#*.} != $i ] && [[ ${i#*.} =~ ^[5-9][0-9]*$ ]] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc) ; }
+	[ ${i#*.} != $i ] && [[ ${i#*.} =~ ^[5-9][0-9]*$ ]] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc); }
 	i=${i%.*}
 	echo $i
 }
