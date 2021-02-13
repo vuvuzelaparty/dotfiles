@@ -60,7 +60,7 @@ precmd() { # same as $PROMPT_COMMAND in bash
 RPROMPT='${vcs_info_msg_0_}'
 
 # display current directory in a nice way
-prettyPathFunc () {
+prettyPath() {
 	local fullShortPath=$(print -P %~ | perl -pe "s/(\w{3})[^\/]+\//\1\//g")
 	local prettyPath=$(print -P %~)
 	if [ $(print -P %~ | grep -o '/' | wc -l) -lt 3 ]; then
@@ -103,7 +103,7 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-PROMPT='%F{magenta}<< %F{red}%n%F{blue}@%m %F{green}~> %F{yellow}$(prettyPathFunc)%F{magenta} >>%f ${VIMODE} $ ' # display prompt in a nice way
+PROMPT='%F{magenta}<< %F{red}%n%F{blue}@%m %F{green}~> %F{yellow}$(prettyPath)%F{magenta} >>%f ${VIMODE} $ ' # display prompt in a nice way
 
 # xrdb -merge ~/.Xresources
 
