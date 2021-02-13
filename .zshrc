@@ -196,6 +196,7 @@ alias gzip='gzip -f'
 alias pdf='evince 2> /dev/null'
 alias img='eog 2> /dev/null'
 alias mm='free -ht'
+alias clrmem="sudo sh -c 'sync; echo 1 > /proc/sys/vm/drop_caches; sync; echo 2 > /proc/sys/vm/drop_caches; sync; echo 3 > /proc/sys/vm/drop_caches'"
 open() {
 	for i in $@; do
 		[[ "$(file -b $i)" =~ "PDF document.*" ]] && pdf $i &
@@ -219,14 +220,6 @@ intRound() {
 	i=${i%.*}
 	echo $i
 }
-
-# clear memory
-# sync
-# echo 1 > /proc/sys/vm/drop_caches
-# sync
-# echo 2 > /proc/sys/vm/drop_caches
-# sync
-# echo 3 > /proc/sys/vm/drop_caches
 
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
 
