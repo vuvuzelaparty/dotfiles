@@ -204,21 +204,17 @@ open() {
 	done
 }
 floor() {
-	local i=$1
-	i=${i%.*}
-	echo $i
+	echo ${1%.*}
 }
 ceil() {
 	local i=$1
 	[ ${i#*.} != $i ] && [ ${i#*.} -gt 0 ] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc); }
-	i=${i%.*}
-	echo $i
+	echo ${i%.*}
 }
 intRound() {
 	local i=$1
 	[ ${i#*.} != $i ] && [[ ${i#*.} =~ ^[5-9][0-9]*$ ]] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc); }
-	i=${i%.*}
-	echo $i
+	echo ${i%.*}
 }
 
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
