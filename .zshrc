@@ -176,9 +176,9 @@ pi() { setTabTitle pi && ssh pi@raspberrypi && ti }
 alias stats='neofetch'
 makej() { make -j || make V=s | tee make_fail }
 alias AURmake='makepkg -Acsf' # $ AURmake
-alias AURinstall='sudo pacman -U' # $ AURinstall foo.pkg.tar.xz
+alias AURinstall='sudo pacman -U' # $ AURinstall foo.pkg.tar.zst
 alias AURaddkey='gpg --recv-keys'
-AURupdate() { ghead=$(git rev-parse HEAD) && gp && [ $(git rev-parse HEAD) != $ghead ] && rm *.pkg.tar.xz && AURmake && AURinstall *.pkg.tar.xz }
+AURupdate() { ghead=$(git rev-parse HEAD) && gp && [ $(git rev-parse HEAD) != $ghead ] && rm -f *.pkg.tar.zst *.pkg.tar.xz *.deb && AURmake && AURinstall *.pkg.tar.zst }
 UAAUR() { prev=$PWD && cd ~/AUR && for dir in $(ls --color=never); do echo $dir; cd $dir; AURupdate; cd -; done && cd $prev }
 alias smigrep='noglob ~/dev/smigrep/smigrep'
 alias sm='smigrep'
