@@ -86,7 +86,6 @@ title() {
 		setTabTitle "$(echo $PWD | awk -F "/" '{print $NF}')"
 	fi
 }
-title
 alias ti='title'
 
 chpwd() # function that executes any time cd is executed
