@@ -43,8 +43,8 @@ autoload -Uz vcs_info
 zstyle ':vcs_info:*' stagedstr 'Staged'
 zstyle ':vcs_info:*' unstagedstr ' Modified'
 zstyle ':vcs_info:*' check-for-changes true
-zstyle ':vcs_info:*' actionformats '%F{5}[ %F{2}%b%F{3}|%F{1}%a%F{5} ]%f'
-zstyle ':vcs_info:*' formats '%B%F{2}%c%F{3}%u %F{5}[ %F{2}%b%F{5} ]'
+zstyle ':vcs_info:*' actionformats '%B%F{5}[ %F{2}%b%F{3}|%F{1}%a%F{5} ]%%b%f'
+zstyle ':vcs_info:*' formats '%B%F{2}%c%F{3}%u %F{5}[ %F{2}%b%F{5} ]%%b%f'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 zstyle ':vcs_info:*' enable git
 +vi-git-untracked() {
@@ -87,11 +87,12 @@ title() {
 	fi
 }
 title
+alias ti='title'
 
 chpwd() # function that executes any time cd is executed
 {
 	ls
-	title
+	ti
 }
 
 VIMODE="-I-"
@@ -172,7 +173,7 @@ eval $(thefuck --alias)
 eval $(thefuck --alias FUCK)
 swp() { find . -depth -name .\*.swp -exec rm -i {} \; && find ~/.cache/vim/swap -name \*.swp -exec rm -i {} \; }
 alias tmp='rm /tmp/tmp.*'
-pi() { setTabTitle pi && ssh pi@raspberrypi && title }
+pi() { setTabTitle pi && ssh pi@raspberrypi && ti }
 alias stats='neofetch'
 makej() { make -j || make V=s | tee make_fail }
 alias AURmake='makepkg -Acsf' # $ AURmake
@@ -183,8 +184,8 @@ UAAUR() { prev=$PWD && cd ~/AUR && for dir in $(ls --color=never); do echo $dir;
 alias smigrep='noglob ~/dev/smigrep/smigrep'
 alias sm='smigrep'
 alias networkIPlist="nmap -sn $(ip route show | grep -i 'default via'| awk '{print $3}')/24"
-spu() { sudo pacman-key --refresh-keys && sudo pacman -Syu && sudo pacman -R $(pacman -Qdtq) }
-spuf() { sudo pacman-key --refresh-keys && sudo pacman -Syyu && sudo pacman -R $(pacman -Qdtq) } # sometimes this doesn't work, run `sudo pacman -S archlinux-keyring` if hit with corrupted keys
+spu() { sudo pacman-key --refresh-keys; sudo pacman -Syu && sudo pacman -R $(pacman -Qdtq) }
+spuf() { sudo pacman-key --refresh-keys; sudo pacman -Syyu && sudo pacman -R $(pacman -Qdtq) } # sometimes this doesn't work, run `sudo pacman -S archlinux-keyring` if hit with corrupted keys
 rand() { [[ "$1" =~ "^[0-9]+$" ]] && (($1 < 32769)) && echo $(( RANDOM%$1 + 1 )) || { echo "Please enter a number between 1 and 32768" && return } }
 rand2() { [[ "$1" =~ "^[0-9]+$" ]] && [[ "$2" =~ "^[0-9]+$" ]] && (($2 < 32769)) && (($2 > $1)) && echo $(( RANDOM%(($2-$1+1)) + $1 )) || { echo "Please enter 2 numbers between 1 and 32768, with the second number being greater than the first" && return } }
 awkk() { awk "NR==$1" }
@@ -204,17 +205,19 @@ open() {
 	done
 }
 floor() {
-	echo ${1%.*}
+	[ ${1:0:1} != "-" ] && echo ${1%.*} || { [ ${1#*.} = $1 ] && echo ${1%.*} || echo $[${1%.*}-1]; }
+}
+absFloor() {
+	[ ${1%.*} = "-0" ] && echo 0 || echo ${1%.*}
 }
 ceil() {
-	local i=$1
-	[ ${i#*.} != $i ] && [ ${i#*.} -gt 0 ] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc); }
-	echo ${i%.*}
+	[ ${1%.*} = "-0" ] && echo 0 || { [ ${1:0:1} = "-" ] && echo ${1%.*} || { [ ${1#*.} != $1 ] && echo $[${1%.*}+1] || echo ${1%.*}; }; }
+}
+absCeil() {
+	[ ${1#*.} != $1 ] && [ ${1#*.} -gt 0 ] && { [ ${1:0:1} = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo 0
 }
 intRound() {
-	local i=$1
-	[[ ${i#*.} =~ ^[5-9][0-9]*$ ]] && { [ ${i:0:1} = "-" ] && i=$(echo "$i - 1" | bc) || i=$(echo "$i + 1" | bc); }
-	echo ${i%.*}
+	[[ ${1#*.} =~ ^[5-9][0-9]*$ ]] && { [ ${1:0:1} = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || { [ ${1%.*} = "-0" ] && echo 0 || echo ${1%.*}; }
 }
 
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
