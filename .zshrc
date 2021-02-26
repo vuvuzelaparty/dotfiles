@@ -203,7 +203,7 @@ open() {
 		{ [[ "$(file -b $i)" =~ "JPEG image data.*" ]] || [[ "$(file -b $i)" =~ "PNG image data.*" ]] } && img $i &
 	done
 }
-ceil() { [ "${1%.*}" = "-0" ] && echo 0 || { [ ${1#*.} -gt 0 ] && [ ${1:0:1} != "-" ] && echo $[${1%.*}+1] || echo ${1%.*}; }; } # round towards positive infinity
+ceil() { [ "${1%.*}" = "-0" ] && echo 0 || { [ "${1#*.}" -gt "0" ] && [ "${1:0:1}" != "-" ] && echo $[${1%.*}+1] || echo ${1%.*}; }; } # round towards positive infinity
 floor() { [ "${1#*.}" -gt "0" ] && [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo ${1%.*}; } # round towards negative infinity
 ceilA() { [ "${1#*.}" -gt "0" ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo 0; } # round away from 0
 floorA() { [ "${1%.*}" = "-0" ] && echo 0 || echo ${1%.*}; } # round towards 0
