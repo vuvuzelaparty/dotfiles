@@ -205,9 +205,9 @@ open() {
 }
 ceil() { [ "${1%.*}" = "-0" ] && echo 0 || { [ ${1#*.} -gt 0 ] && [ ${1:0:1} != "-" ] && echo $[${1%.*}+1] || echo ${1%.*}; }; } # round towards positive infinity
 floor() { [ "${1#*.}" -gt "0" ] && [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo ${1%.*}; } # round towards negative infinity
-altCeil() { [ "${1#*.}" -gt 0 ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo 0; } # round away from 0
-altFloor() { [ "${1%.*}" = "-0" ] && echo 0 || echo ${1%.*}; } # round towards 0
-intRound() { [[ "${1#*.}" =~ "^[5-9][0-9]*$" ]] && altCeil $1 || altFloor $1; } # round to nearest integer
+ceilA() { [ "${1#*.}" -gt "0" ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo 0; } # round away from 0
+floorA() { [ "${1%.*}" = "-0" ] && echo 0 || echo ${1%.*}; } # round towards 0
+roundInt() { [[ "${1#*.}" =~ "^[5-9][0-9]*$" ]] && ceilA $1 || floorA $1; } # round to nearest integer
 
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
 
