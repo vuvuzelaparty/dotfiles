@@ -4,6 +4,8 @@ cp ~/.zshrc ~/.zshenv
 # clear all aliases
 unalias -m "*"
 
+# to clear a function, use $(unset -f <function>)
+
 alias ls='ls -CF --color=always' # color and extension coded output of ls
 
 # reset home directory
@@ -205,9 +207,9 @@ open() {
 }
 ceil() { [ "${1%.*}" = "-0" ] && echo 0 || { [ "${1#*.}" -gt "0" ] && [ "${1:0:1}" != "-" ] && echo $[${1%.*}+1] || echo ${1%.*}; }; } # round towards positive infinity
 floor() { [ "${1#*.}" -gt "0" ] && [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo ${1%.*}; } # round towards negative infinity
-truncate() { [ "${1%.*}" = "-0" ] && echo 0 || echo ${1%.*}; } # round towards 0
-truncateR() { [ "${1#*.}" -gt "0" ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo 0; } # round away from 0
-roundToInt() { [[ "${1#*.}" =~ "^[5-9][0-9]*$" ]] && truncateR $1 || truncate $1; } # round to nearest integer
+trunc() { [ "${1%.*}" = "-0" ] && echo 0 || echo ${1%.*}; } # round towards 0
+truncR() { [ "${1#*.}" -gt "0" ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo 0; } # round away from 0
+roundToInt() { [[ "${1#*.}" =~ "^[5-9][0-9]*$" ]] && truncR $1 || trunc $1; } # round to nearest integer
 
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
 
