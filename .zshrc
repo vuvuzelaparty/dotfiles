@@ -205,10 +205,10 @@ open() {
 		{ [[ "$(file -b $i)" =~ "JPEG image data.*" ]] || [[ "$(file -b $i)" =~ "PNG image data.*" ]] } && img $i &
 	done
 }
-ceil() { [ "${1%.*}" = "-0" ] && echo 0 || { [ "${1#*.}" -gt "0" ] && [ "${1:0:1}" != "-" ] && echo $[${1%.*}+1] || echo ${1%.*}; }; } # round towards positive infinity
-floor() { [ "${1#*.}" -gt "0" ] && [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo ${1%.*}; } # round towards negative infinity
+ceil() { [ "${1%.*}" = "-0" ] && echo 0 || { [ "${1#*.}" -gt "0" ] && [ "${1:0:1}" != "-" ] && echo $[${1%.*}+1] || echo ${1%.*}; } } # round towards positive infinity
+floor() { [ "${1#*.}" != "$1" ] && [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo ${1%.*}; } # round towards negative infinity
 trunc() { [ "${1%.*}" = "-0" ] && echo 0 || echo ${1%.*}; } # round towards 0
-truncR() { [ "${1#*.}" -gt "0" ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo 0; } # round away from 0
+truncR() { [ "${1#*.}" != "$1" ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo ${1%.*}; } # round away from 0
 roundToInt() { [[ "${1#*.}" =~ "^[5-9][0-9]*$" ]] && truncR $1 || trunc $1; } # round to nearest integer
 
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles; sed -i "s/blu=\".*/blu=\"<bluetooth_address>\"\n# replace <bluetooth_address> with your device ID\; can be found by doing \`echo 'paired-devices' | bluetoothctl\` assuming your device is already paired/" .blu }
