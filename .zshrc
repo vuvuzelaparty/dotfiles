@@ -187,8 +187,8 @@ alias sm='smigrep'
 alias networkIPlist="nmap -sn $(ip route show | grep -i 'default via'| awk '{print $3}')/24"
 spu() { sudo pacman-key --refresh-keys; sudo pacman -Syu && sudo pacman -R $(pacman -Qdtq) }
 spuf() { sudo pacman-key --refresh-keys; sudo pacman -Syyu && sudo pacman -R $(pacman -Qdtq) } # sometimes this doesn't work, run `sudo pacman -S archlinux-keyring` if hit with corrupted keys
-rand() { [[ "$1" =~ "^[0-9]+$" ]] && (($1 < 32769)) && echo $(( RANDOM%$1 + 1 )) || { echo "Please enter a number between 1 and 32768" && return } }
-rand2() { [[ "$1" =~ "^[0-9]+$" ]] && [[ "$2" =~ "^[0-9]+$" ]] && (($2 < 32769)) && (($2 > $1)) && echo $(( RANDOM%(($2-$1+1)) + $1 )) || { echo "Please enter 2 numbers between 1 and 32768, with the second number being greater than the first" && return } }
+rand() { [[ "$1" =~ "^[0-9]+$" ]] && [ $1 -lt 32769 ] && echo $[RANDOM%$1+1] || { echo "Please enter a number between 1 and 32768" && return; } }
+rand2() { [[ "$1" =~ "^[0-9]+$" ]] && [[ "$2" =~ "^[0-9]+$" ]] && [ $2 -lt 32769 ] && [ $2 -gt $1 ] && echo $[RANDOM%$[$2-$1+1]+$1] || { echo "Please enter 2 numbers between 1 and 32768, with the second number being greater than the first" && return; } }
 awkk() { awk "NR==$1" }
 alias devices="mount | grep 'sd[a-z][0-9]'"
 alias wh='noglob find . -depth -iname'
