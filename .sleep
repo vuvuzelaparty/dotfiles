@@ -1,4 +1,3 @@
 #!/bin/bash
 
-# echo "power off" | bluetoothctl && ./.lock_screen && systemctl suspend -i
 echo "power off" | bluetoothctl && ./.lock_screen && systemctl suspend -i
