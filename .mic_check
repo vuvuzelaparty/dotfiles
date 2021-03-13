@@ -1,3 +1,3 @@
 #!/bin/bash
 
-[ -n "$(amixer get Capture | grep '\[on\]' | awk 'NR==1{print $6}')" ] && echo "Mic: $(amixer get Capture | grep "\[on\]" | awk "NR==1{print $5}" | grep --color=never -oE "[0-9]+%")" || echo "Mic: Off"
+[ -n "$(amixer get Capture | grep '\[on\]' | awk 'NR==1{print $6}')" ] && echo "Mic: $(amixer get "Capture" | grep "\[on\]" | awk "NR==1{print $5}" | grep --color=never -oE "[0-9]+%")" || echo "Mic: Off"
