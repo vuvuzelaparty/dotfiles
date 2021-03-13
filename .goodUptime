@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# print the uptime in a way that I like :^)
+ut=$(uptime)
+[[ $ut == *day* ]] && days=$(echo $ut | awk -F' ' '{print $3}')d:
+[ -z $days ] && hm=$(echo $ut | awk -F'( |,)+' '{print $3}') || hm=$(echo $ut | awk -F'( |,)+' '{print $5}')
+[[ $hm == *:* ]] && hours=${hm%:*}h:
+mins=${hm#*:}m
+echo $days$hours$mins
