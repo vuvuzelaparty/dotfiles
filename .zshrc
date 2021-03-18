@@ -105,9 +105,9 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-PROMPT='%F{magenta}<< %F{red}%n%F{blue}@%m %F{green}~> %F{yellow}$(prettyPath)%F{magenta} >>%f ${VIMODE} $ ' # display prompt in a nice way
+PROMPT='%B%F{magenta}<< %F{red}%n%F{blue}@%m %F{green}~> %F{yellow}$(prettyPath)%F{magenta} >>%f ${VIMODE} $ %b' # display prompt in a nice way
 
-# xrdb -merge ~/.Xresources
+xrdb -merge ~/.Xresources
 
 source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 typeset -A ZSH_HIGHLIGHT_STYLES

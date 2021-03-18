@@ -131,7 +131,7 @@ let g:ctrlp_by_filename = 1
 let g:ctrlp_cmd = 'CtrlP'
 
 " Change colorscheme from default
-colorscheme vcolorscheme
+colorscheme vpurpura
 
 set t_Co=256
 
