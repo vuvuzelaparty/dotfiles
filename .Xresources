@@ -89,7 +89,4 @@ XTerm*background     : _background
 XTerm*cursorColor    : _cursorColor
 UXTerm*cursorColor   : white
 UXTerm*Foreground    : white
-UXTerm*Background    : #560094
-!#500698
-!#5b0698
-!#560094
+UXTerm*Background    : #410094
