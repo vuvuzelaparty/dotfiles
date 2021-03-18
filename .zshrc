@@ -105,7 +105,7 @@ function zle-line-init zle-keymap-select {
 zle -N zle-line-init
 zle -N zle-keymap-select
 
-PROMPT='%B%F{magenta}<< %F{red}%n%F{blue}@%m %F{green}~> %F{yellow}$(prettyPath)%F{magenta} >>%f ${VIMODE} $ %b' # display prompt in a nice way
+PROMPT='%B%F{magenta}<< %F{red}%n%F{blue}@%m %F{green}~> %F{yellow}$(prettyPath)%F{magenta} >>%f ${VIMODE} %b$ ' # display prompt in a nice way
 
 xrdb -merge ~/.Xresources
 
