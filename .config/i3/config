@@ -223,7 +223,7 @@ bindsym F2 exec amixer -D pulse sset Master 2%-
 bindsym Shift+F2 exec amixer -D pulse sset Master 10%-
 bindsym F3 exec amixer -D pulse sset Master 2%+
 bindsym Shift+F3 exec amixer -D pulse sset Master 10%+
-bindsym F4 exec [ -n "$(amixer get Capture | grep '\[off\]' | awk 'NR==1{print $6}')" ] && amixer set "Capture" cap || amixer set "Capture" nocap
+bindsym F4 exec [ -n "$(amixer get Capture | grep '\[off\]' | awk 'NR==1{print $5}')" ] && amixer set "Capture" cap || amixer set "Capture" nocap
 bindsym F5 exec amixer -D pulse sset Capture 2%-
 bindsym Shift+F5 exec amixer -D pulse sset Capture 10%-
 bindsym F6 exec amixer -D pulse sset Capture 2%+

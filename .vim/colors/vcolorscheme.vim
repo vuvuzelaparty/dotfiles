@@ -12,8 +12,8 @@ hi CursorLine	cterm=bold
 hi CursorLineNR	ctermfg=red ctermbg=233 cterm=bold
 hi Normal		guifg=#c0c0c0 guibg=#000040						ctermfg=39 ctermbg=none
 hi ErrorMsg		guifg=#ffffff guibg=#287eff						ctermfg=black ctermbg=lightblue
-hi Visual		guifg=#8080ff guibg=fg gui=reverse				ctermfg=lightblue ctermbg=black cterm=reverse,bold
-hi VisualNOS	guifg=#8080ff guibg=fg gui=reverse,underline	ctermfg=lightblue ctermbg=fg cterm=reverse,underline
+hi Visual		guifg=#8080ff guibg=fg gui=none					ctermfg=black ctermbg=lightblue cterm=bold
+hi VisualNOS	guifg=#8080ff guibg=fg gui=underline			ctermfg=fg ctermbg=lightblue cterm=underline
 hi Todo			guifg=#d14a14 guibg=#1248d1						ctermfg=215 ctermbg=Blue cterm=bold
 hi Search		guifg=#90fff0 guibg=#2050d0						ctermfg=black ctermbg=darkblue cterm=underline term=underline
 hi IncSearch	guifg=#b0ffff guibg=#2050d0						ctermfg=darkblue ctermbg=red

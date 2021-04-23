@@ -72,6 +72,7 @@ let g:yankring_history_dir='$HOME/.vim/yank'
 ca WQA wqa
 ca WQa wqa
 ca Wqa wqa
+ca qwa wqa
 ca WQ wq
 ca Wq wq
 ca QW wq
@@ -124,11 +125,6 @@ nnoremap <Space> zA
 set lbr
 
 set formatoptions=c,q,r,t
-
-let g:ctrlp_map = '<c-p>'
-let g:ctrlp_by_filename = 1
-
-let g:ctrlp_cmd = 'CtrlP'
 
 " Change colorscheme from default
 colorscheme vpurpura
@@ -237,3 +233,9 @@ endif
 let g:ctrlp_map = '<c-p>'
 let g:strlp_by_filename = 1
 let g:ctrlp_cmd = 'CtrlP'
+
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
