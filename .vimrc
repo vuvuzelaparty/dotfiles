@@ -6,12 +6,12 @@ set fileformats=unix,dos
 
 " Setting up Vundle - the vim plugin bundler
 let iCanHazVundle=1
-let vundle_readme=expand('~/.vim/bundle/vundle/README.md')
+let vundle_readme=expand('~/.vim/bundle/Vundle.vim/README.md')
 if !filereadable(vundle_readme)
 	echo "Installing Vundle..."
 	echo ""
 	silent !mkdir -p ~/.vim/bundle
-	silent !git clone https://github.com/gmarik/vundle ~/.vim/bundle/vundle
+	silent !git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 	let iCanHazVundle=0
 endif
 
@@ -23,14 +23,17 @@ call vundle#begin()
 "
 "" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'rust-lang/rust'
+Plugin 'jiangmiao/auto-pairs'
+" Plugin 'rust-lang/rust'
+" also will need ctags
 Plugin 'vim-syntastic/syntastic'
-Plugin 'vim-airline/vim-airline'
+Plugin 'itchyny/lightline.vim'
 Plugin 'kshenoy/vim-signature'
 Plugin 'majutsushi/tagbar'
 Plugin 'kien/tabman.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'vim-scripts/YankRing.vim'
+Plugin 'preservim/nerdtree'
 call vundle#end()			" required
 filetype plugin indent on	" required
 "" To ignore plugin indent changes, instead use:
@@ -41,8 +44,6 @@ if !iCanHazVundle
 	echo ""
 	:BundleInstall
 endif
-
-execute pathogen#infect()
 
 let g:gitgutter_sign_column_always = 1
 
@@ -59,7 +60,7 @@ let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 let g:syntastic_check_on_w = 1
 
-" Set syntax on
+"Set syntax on
 syntax on
 
 if has('persistent_undo')
@@ -68,6 +69,10 @@ if has('persistent_undo')
 endif
 
 let g:yankring_history_dir='$HOME/.vim/yank'
+
+let g:lightline = { 'colorscheme' : 'deus' }
+
+" let g:tagbar_ctags_bin = '~/.vim/bundle/ctags/ctags'
 
 ca WQA wqa
 ca WQa wqa
@@ -113,16 +118,13 @@ set showmatch
 
 set ignorecase
 
-" Case insensitive search
-set ic
-
 set smartcase
 
 "set foldmethod=manual
 nnoremap <Space> zA
 
 " Wrap text instead of being on one line
-set lbr
+set linebreak
 
 set formatoptions=c,q,r,t
 
@@ -151,14 +153,19 @@ set smarttab
 
 set showcmd
 
-set shortmess=as
+set noshowmode
 
+" yank what's under a visual block
 vnoremap // y/<C-R>"<CR>
 
-nnoremap <C-j> :m .+1<CR>==
-nnoremap <C-k> :m .-2<CR>==
-" vnoremap <C-j> <ESC>:m .+1<CR>==gi TODO
-" vnoremap <C-k> <ESC>:m .-2<CR>==gi TODO
+" append and prepend visual block with single/double quotes
+vnoremap qq <Esc>`>a'<Esc>`<i'<Esc>
+vnoremap QQ <Esc>`>a"<Esc>`<i"<Esc>
+
+nnoremap <C-j> :m+<CR>
+nnoremap <C-k> :m-2<CR>
+" vnoremap <C-j> :m+<CR>gv=gv TODO
+vnoremap <C-k> :m-2<CR>gv=gv TODO
 
 function! Tab_Or_Complete()
 	if col('.')>1 && strpart( getline('.'), col('.')-2, 3) =~ '^\w'
@@ -185,13 +192,14 @@ set listchars=tab:>-
 "  n... :  where to save the viminfo files
 set viminfo='10,\"100,:20,%,n~/.viminfo
 
+" reopen file to last line that cursor was on instead of opening to the top
+" every time
 function! ResCur()
 	if line("'\"") <= line("$")
 		normal! g`"
 		return 1
 	endif
 endfunction
-
 augroup resCur
 	autocmd!
 	autocmd BufWinEnter * call ResCur()
@@ -209,12 +217,12 @@ nnoremap <esc>OF $
 inoremap <esc>OF <esc>$a
 cnoremap <esc>OF <end>
 
-"map <C-n> :NERDTreeToggle<CR>
-
 nnoremap <S-Tab> :SyntasticReset<CR>
 nnoremap <F9> :TMToggle<CR>
 nnoremap <F10> :YRShow<CR>
 nnoremap <F11> :TagbarToggle<CR>
+"<shift+i> for hidden files
+nnoremap <F12> :NERDTreeToggle<CR>
 
 " auto set screen/tmux title to be current file
 autocmd BufEnter * let &titlestring = "vim: " . expand("%:t")
@@ -230,12 +238,13 @@ else
 	let &titleold = expand("%:p:h:t")
 endif
 
-let g:ctrlp_map = '<c-p>'
-let g:strlp_by_filename = 1
-let g:ctrlp_cmd = 'CtrlP'
+" let g:ctrlp_map = '<c-p>'
+" let g:strlp_by_filename = 1
+" let g:ctrlp_cmd = 'CtrlP'
 
-match ExtraWhitespace /\s\+$/
-autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+" highlight excess whitespace
+match ExtraWhiteSpace /\s\+$/
+autocmd BufWinEnter * match ExtraWhiteSpace /\s\+$/
+autocmd InsertEnter * match ExtraWhiteSpace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhiteSpace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
