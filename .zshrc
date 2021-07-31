@@ -208,6 +208,13 @@ truncR() { [ "${1#*.}" != "$1" ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] 
 roundToInt() { [[ "${1#*.}" =~ "^[5-9][0-9]*$" ]] && truncR $1 || trunc $1; } # round to nearest integer
 
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles }
+na() {
+	if [ $# -eq 0 ]; then
+		pcmanfm 2> /dev/null &
+	else
+		pcmanfm $@ 2> /dev/null &
+	fi
+}
 
 rmctrlM() {
 	for i do
