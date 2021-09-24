@@ -1,0 +1,15 @@
+[core]
+	editor = vim
+[color]
+	diff = auto
+	status = auto
+	branch = auto
+	interactive = auto
+[color "status"]
+	changed = yellow
+[cola]
+	spellcheck = false
+[push]
+	default = current
+[pull]
+	rebase = true
