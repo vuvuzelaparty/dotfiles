@@ -42,16 +42,16 @@ promptinit
 
 # git prompt
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' stagedstr 'Staged'
-zstyle ':vcs_info:*' unstagedstr ' Modified'
+zstyle ':vcs_info:*' stagedstr 'Staged%f '
+zstyle ':vcs_info:*' unstagedstr 'Modified%f '
 zstyle ':vcs_info:*' check-for-changes true
 zstyle ':vcs_info:*' actionformats '%B%F{5}[ %F{2}%b%F{3}|%F{1}%a%F{5} ]%%b%f'
-zstyle ':vcs_info:*' formats '%B%F{2}%c%F{3}%u %F{5}[ %F{2}%b%F{5} ]%%b%f'
+zstyle ':vcs_info:*' formats '%B%F{2}%c%F{3}%u%F{5}[ %F{2}%b%F{5} ]%%b%f'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 zstyle ':vcs_info:*' enable git
 +vi-git-untracked() {
 	if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && [[ $(git ls-files --other --directory --exclude-standard | sed q | wc -l | tr -d ' ') == 1 ]]; then
-		hook_com[unstaged]+=' %F{1}New%f'
+		hook_com[unstaged]+='%F{1}New%f '
 	fi
 }
 
