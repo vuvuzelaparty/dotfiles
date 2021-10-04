@@ -50,9 +50,7 @@ zstyle ':vcs_info:*' formats '%B%F{2}%c%F{3}%u%F{5}[ %F{2}%b%F{5} ]%%b%f'
 zstyle ':vcs_info:git*+set-message:*' hooks git-untracked
 zstyle ':vcs_info:*' enable git
 +vi-git-untracked() {
-	if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && [[ $(git ls-files --other --directory --exclude-standard | sed q | wc -l | tr -d ' ') == 1 ]]; then
-		hook_com[unstaged]+='%F{1}New%f '
-	fi
+	[[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && [[ $(git ls-files --other --directory --exclude-standard | sed q | wc -l | tr -d ' ') == 1 ]] && hook_com[unstaged]+='%F{1}New%f '
 }
 
 precmd() { # same as $PROMPT_COMMAND in bash
@@ -176,7 +174,7 @@ makej() { make -j || make V=s | tee make_fail }
 alias AURmake='makepkg -Acsf' # $ AURmake
 alias AURinstall='sudo pacman -U' # $ AURinstall foo.pkg.tar.zst
 alias AURaddkey='gpg --recv-keys'
-AURupdate() { ghead=$(git rev-parse HEAD) && gp && [ $(git rev-parse HEAD) != $ghead ] && rm -f *.pkg.tar.zst *.pkg.tar.xz *.deb && AURmake && AURinstall *.pkg.tar.zst }
+AURupdate() { ghead=$(git rev-parse HEAD) && gp && [ $(git rev-parse HEAD) != $ghead ] && git clean -fd && AURmake && AURinstall *.pkg.tar.zst }
 UAAUR() { prev=$PWD && cd ~/AUR && for dir in $(ls --color=never); do echo $dir; cd $dir; AURupdate; cd -; done && cd $prev }
 alias smigrep='noglob ~/dev/smigrep/smigrep'
 alias sm='smigrep'
