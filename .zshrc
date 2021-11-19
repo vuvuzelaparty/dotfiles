@@ -174,7 +174,7 @@ makej() { make -j || make V=s | tee make_fail }
 alias AURmake='makepkg -Acsf' # $ AURmake
 alias AURinstall='sudo pacman -U' # $ AURinstall foo.pkg.tar.zst
 alias AURaddkey='gpg --recv-keys'
-AURupdate() { ghead=$(git rev-parse HEAD) && gp && [ $(git rev-parse HEAD) != $ghead ] && git clean -fd && AURmake && AURinstall *.pkg.tar.zst }
+AURupdate() { ghead=$(git rev-parse HEAD) && gp && [ $(git rev-parse HEAD) != $ghead ] && git clean -fd && rm -f *.pkg.tar.zst && AURmake && AURinstall *.pkg.tar.zst }
 UAAUR() { prev=$PWD && cd ~/AUR && for dir in $(ls --color=never); do echo $dir; cd $dir; AURupdate; cd -; done && cd $prev }
 alias smigrep='noglob ~/dev/smigrep/smigrep'
 alias sm='smigrep'
