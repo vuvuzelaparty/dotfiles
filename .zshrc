@@ -193,6 +193,7 @@ alias pdf='evince 2> /dev/null'
 alias img='eog 2> /dev/null'
 alias mm='free -ht'
 alias clrmem="sudo sh -c 'sync; echo 1 > /proc/sys/vm/drop_caches; sync; echo 2 > /proc/sys/vm/drop_caches; sync; echo 3 > /proc/sys/vm/drop_caches'"
+na() { [ $# -eq 0 ] && { pcmanfm 2> /dev/null & } || pcmanfm $@ 2> /dev/null & }
 open() {
 	for i in $@; do
 		[[ "$(file -b $i)" =~ "PDF document.*" ]] && pdf $i &
@@ -205,14 +206,11 @@ trunc() { [ "${1%.*}" = "-0" ] && echo 0 || echo ${1%.*}; } # round towards 0
 truncR() { [ "${1#*.}" != "$1" ] && { [ "${1:0:1}" = "-" ] && echo $[${1%.*}-1] || echo $[${1%.*}+1]; } || echo ${1%.*}; } # round away from 0
 roundToInt() { [[ "${1#*.}" =~ "^[5-9][0-9]*$" ]] && truncR $1 || trunc $1; } # round to nearest integer
 
+rsa=~/.ssh/id_rsa
+export rsa
+alias ssh="ssh -i $rsa"
+alias scp="scp -i $rsa"
 dotfiles() { cp ~/.gitrc ~/.tmux.conf ~/.vimrc ~/.zshrc ~/.sleep ~/.lock_screen ~/.dircolors ~/.Xresources ~/.blu ~/dotfiles; cp ~/.config/i3/{config,i3status.conf} ~/dotfiles/.config/i3/; cp ~/.vim/colors/vcolorscheme.vim ~/dotfiles/.vim/colors; cd ~/dotfiles }
-na() {
-	if [ $# -eq 0 ]; then
-		pcmanfm 2> /dev/null &
-	else
-		pcmanfm $@ 2> /dev/null &
-	fi
-}
 
 rmctrlM() {
 	for i do
