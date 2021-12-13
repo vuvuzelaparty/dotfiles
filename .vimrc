@@ -238,6 +238,11 @@ else
 	let &titleold = expand("%:p:h:t")
 endif
 
+" attempt to restrict length of git commit messages
+if expand("%:t") == "COMMIT_EDITMSG"
+	set colorcolumn=72
+endif
+
 " let g:ctrlp_map = '<c-p>'
 " let g:strlp_by_filename = 1
 " let g:ctrlp_cmd = 'CtrlP'
