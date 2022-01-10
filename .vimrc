@@ -96,7 +96,8 @@ ca aq qa
 ca W w
 ca Q q
 ca w!! w !sudo tee %
-ca delma delm! | delm A-Z0-9
+ca delma delm!
+ca delmall delm! | delm A-Z0-9
 ca SP sp
 ca Sp sp
 ca sP sp
@@ -181,9 +182,6 @@ set dictionary="/usr/dict/words"
 set list
 set listchars=tab:>-
 
-" /* when reopening a file in vim, return cursor to previous position instead
-" of top of file
-
 "Tell vim to remember certain things when we exit
 "  '10  :  marks will be remembered for up to 10 previously edited files
 "  "100 :  will save up to 100 lines for each register
@@ -204,18 +202,6 @@ augroup resCur
 	autocmd!
 	autocmd BufWinEnter * call ResCur()
 augroup END
-
-" */
-
-" For some reason home and end keys are not mapping properly.
-" Home key
-inoremap <esc>OH <esc>0i
-cnoremap <esc>OH <home>
-nnoremap <esc>OH 0
-" End key
-nnoremap <esc>OF $
-inoremap <esc>OF <esc>$a
-cnoremap <esc>OF <end>
 
 nnoremap <S-Tab> :SyntasticReset<CR>
 nnoremap <F9> :TMToggle<CR>
@@ -253,3 +239,7 @@ autocmd BufWinEnter * match ExtraWhiteSpace /\s\+$/
 autocmd InsertEnter * match ExtraWhiteSpace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhiteSpace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
+
+" search and replace in a visual block
+" after highlighting text, type the following in normal mode:
+" :%s/\%V<search>/<replace>/g
