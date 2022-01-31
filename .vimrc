@@ -127,7 +127,8 @@ nnoremap <Space> zA
 " Wrap text instead of being on one line
 set linebreak
 
-set formatoptions=c,q,r,t
+" see `:help fo-table` for explanations
+set formatoptions=tcrq
 
 " Change colorscheme from default
 colorscheme vpurpura
@@ -155,6 +156,8 @@ set smarttab
 set showcmd
 
 set noshowmode
+
+set shortmess=at
 
 " yank what's under a visual block
 vnoremap // y/<C-R>"<CR>
