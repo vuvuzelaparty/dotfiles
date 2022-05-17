@@ -16,7 +16,7 @@ HISTFILE=~/.zhistory
 HISTSIZE=5000
 SAVEHIST=5000
 
-setopt autocd braceccl cbases cprecedences extendedglob globdots globstarshort histexpiredupsfirst histfindnodups histignorealldups histignoredups histreduceblanks histsavenodups listpacked magicequalsubst markdirs numericglobsort octalzeroes pathdirs promptsubst rcexpandparam sunkeyboardhack
+setopt autocd braceccl cbases cprecedences extendedglob globdots globstarshort histexpiredupsfirst histfindnodups histignorealldups histignoredups histreduceblanks histsavenodups incappendhistory listpacked magicequalsubst markdirs numericglobsort octalzeroes pathdirs promptsubst rcexpandparam sunkeyboardhack
 unsetopt caseglob flowcontrol ignorebraces ignoreclosebraces nomatch
 
 bindkey -v # vi mode
